@@ -8,4 +8,8 @@ class Property < Space
         @price = price
         @color = color
     end
+
+    def land_on(player)
+        puts "#{player.name} land on #{@name}"
+    end
 end

@@ -3,6 +3,5 @@ class Space
 
     def initialize(name)
         @name = name
-        @type = type
     end
 end

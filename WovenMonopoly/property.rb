@@ -1,3 +1,5 @@
+require_relative 'space'
+
 class Property < Space
     attr_reader :price, :color
 

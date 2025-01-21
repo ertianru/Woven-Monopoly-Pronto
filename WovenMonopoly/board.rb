@@ -1,5 +1,9 @@
 class Board
-    def initialize
-        attr_accessor :spaces, :players, :dice_rolls
+    attr_accessor :spaces, :players, :dice_rolls
+
+    def initialize(spaces, players, dice_rolls)
+        @spaces = spaces
+        @players = players
+        @dice_rolls = dice_rolls
     end
 end

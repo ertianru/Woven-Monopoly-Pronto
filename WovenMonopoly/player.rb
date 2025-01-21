@@ -1,3 +1,5 @@
+require_relative 'bankrupt_error'
+
 class Player
     attr_accessor :name, :money, :properties, :position
 
@@ -8,10 +10,25 @@ class Player
         @position = position
     end
 
+    def buy_property(property)
+        raise BankruptError if @money < property.price
+
+        @money -= property.price
+        @properties << property
+        puts "#{@name} bought #{property.name}"
+    end
+
+    def pay_rent(property)
+        raise BankruptError if @money < property.rent
+
+        @money -= property.rent
+        property.owner.money += property.rent
+        puts "#{@name} paid rent to #{property.owner.name}"
+        puts "#{@name}"
+        puts "#{property.owner}"
+    end
+
     def to_s
-        "Player: #{@name}
-        Money: #{@money}
-        Properties: #{@properties}
-        Position: #{@position}"
+        "    Player: #{@name}\n    Money: #{@money}\n    Properties: #{@properties}\n    Position: #{@position}"
     end
 end

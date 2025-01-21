@@ -27,7 +27,7 @@ class WovenMonopoly
             when 'go'
                 spaces << Go.new(s['name'])
             when 'property'
-                spaces << Property.new(s['name'], s['price'], s['color'])
+                spaces << Property.new(s['name'], s['price'], s['color'], 2)
             end
         end
 

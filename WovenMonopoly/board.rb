@@ -12,8 +12,14 @@ class Board
     def start_game
         @turn_num = 0
         until @game_over || turn_num > @dice_rolls.length
-            player = @players[@turn_num % @players.length]
-            take_turn(player)
+            begin
+                player = @players[@turn_num % @players.length]
+                take_turn(player)
+            rescue BankruptError => e
+                puts "#{player.name} is bankrupt (#{player.money})"
+                @game_over = true
+            end
+
             @turn_num += 1
         end
     end

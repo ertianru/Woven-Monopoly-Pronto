@@ -6,6 +6,6 @@ class Go < Space
     end
 
     def land_on(player)
-        puts "#{player.name} pass by #{@name}"
+        puts "#{player} pass by #{@name}"
     end
 end

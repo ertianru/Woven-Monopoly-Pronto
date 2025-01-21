@@ -7,4 +7,11 @@ class Player
         @properties = []
         @position = position
     end
+
+    def to_s
+        "Player: #{@name}
+        Money: #{@money}
+        Properties: #{@properties}
+        Position: #{@position}"
+    end
 end

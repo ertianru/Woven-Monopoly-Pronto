@@ -10,6 +10,6 @@ class Property < Space
     end
 
     def land_on(player)
-        puts "#{player.name} land on #{@name}"
+        puts "#{player} land on #{@name}"
     end
 end

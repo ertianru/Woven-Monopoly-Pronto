@@ -14,7 +14,7 @@ In Woven Monopoly, when the dice rolls are set ahead of time, the game is determ
 - [x] Everybody starts on GO
 - [ ] You get $1 when you pass GO (this excludes your starting move)
 - [x] If you land on a property, you must buy it
-- [ ] If you land on an owned property, you must pay rent to the owner
+- [x] If you land on an owned property, you must pay rent to the owner
 - [ ] If the same owner owns all property of the same colour, the rent is doubled
 - [ ] Once someone is bankrupt, whoever has the most money remaining is the winner
 - There are no chance cards, jail or stations

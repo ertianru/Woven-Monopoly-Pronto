@@ -5,18 +5,40 @@ require_relative 'board'
 require_relative 'player'
 
 class WovenMonopoly
-    attr_reader :board
+    attr_accessor :players, :dice_rolls
+    attr_reader :board, :turn_num, :properties, :curr_player
 
     def initialize(spaces_file_path, player_names, dice_rolls_file_path)
-        @board = Board.new(load_spaces(spaces_file_path), load_player(player_names),
-                           JSON.parse(File.read(dice_rolls_file_path)))
+        @board = Board.new(load_spaces(spaces_file_path))
+        @players = load_player(player_names)
+        @dice_rolls = JSON.parse(File.read(dice_rolls_file_path))
+        @turn_num = 0
+        @curr_player = get_current_player
     end
 
     def start_game
-        @board.start_game
+        until @curr_player.bankrupt? || turn_num > @dice_rolls.length
+            @curr_player = get_current_player
+            take_turn(@curr_player)
+
+            @turn_num += 1
+        end
+        puts "#{@curr_player.name} is bankrupt"
+        puts @curr_player
+        puts 'Game Over'
     end
 
     private
+
+    def get_current_player(turn_num = @turn_num)
+        @players[turn_num % @players.length]
+    end
+
+    def take_turn(player)
+        roll = @dice_rolls[@turn_num % @dice_rolls.length]
+        @curr_player.move(roll, @board.size)
+        @board.get_space(player.position).land_on(player)
+    end
 
     def load_spaces(spaces_file_path)
         spaces_json = JSON.parse(File.read(spaces_file_path))

@@ -29,6 +29,10 @@ class Player
         puts "#{property.owner}"
     end
 
+    def move(roll, board_size)
+        @position = (@position + roll) % board_size
+    end
+
     def bankrupt?
         money < 0
     end

@@ -17,12 +17,12 @@ class Player
         @properties_num_by_color[color] += 1
     end
 
-    def pay_rent(rent)
-        @money -= rent
+    def deduct_money(money)
+        @money -= money
     end
 
-    def receive_rent(rent)
-        @money += rent
+    def receive_money(money)
+        @money += money
     end
 
     def get_num_owned_properties_color(color)

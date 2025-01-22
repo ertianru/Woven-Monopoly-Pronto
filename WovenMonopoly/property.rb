@@ -18,18 +18,28 @@ class Property < Space
     end
 
     def land_on(player)
-        puts "#{player.name} land on #{@name}"
-        puts "#{player}"
+        puts "#{player.name} lands on #{@name}"
 
         if @owner.nil?
+            puts "#{@name} is unowned"
+            puts "#{player.name} ($#{player.money}) bought #{@name}"
+
             handle_purchase(player)
+
+            puts self
         else
+            puts "#{@name} is owned by #{@owner.name}"
+            puts "#{player.name} ($#{player.money}) pays rent to #{@owner.name} (#{@owner.money})"
+
             handle_rent(player)
+
+            puts "    #{player.name} ($#{player.money})"
+            puts "    #{@owner.name} ($#{@owner.money})"
         end
     end
 
     def to_s
-        "    Property: #{@name}\n    Price: #{@price}\n    Color: #{@color}\n    Owner: #{@owner}\n    Rent: #{@rent}"
+        "    Property: #{@name}\n    Price: #{@price}\n    Color: #{@color}\n    Owner: \n#{@owner}\n    Rent: #{@rent}"
     end
 
     private
@@ -37,7 +47,6 @@ class Property < Space
     def handle_purchase(player)
         player.buy_property(@price, @color)
         @owner = player
-        puts "#{player.name} bought #{@name}"
     end
 
     def handle_rent(player)
@@ -48,12 +57,8 @@ class Property < Space
             rent *= 2
         end
 
-        player.pay_rent(rent)
-        @owner.receive_rent(rent)
-
-        puts "#{player} paid rent to #{@owner.name}"
-        puts "#{player}"
-        puts "#{@owner}"
+        player.deduct_money(rent)
+        @owner.receive_money(rent)
     end
 
     def validate_properties_num_by_color

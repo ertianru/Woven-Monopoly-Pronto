@@ -26,9 +26,29 @@ class WovenMonopoly
         puts "#{@curr_player.name} is bankrupt"
         puts @curr_player
         puts 'Game Over'
+
+        winner = determine_winner
+        puts "Winner is\n#{winner}"
+        puts '=================================================================='
+        @players.each do |player|
+            puts player
+            puts "\n"
+        end
     end
 
     private
+
+    def determine_winner
+        winner = nil
+        money = 0
+        @players.each do |player|
+            if player.money > money
+                winner = player
+                money = player.money
+            end
+        end
+        winner
+    end
 
     def get_current_player(turn_num = @turn_num)
         @players[turn_num % @players.length]
@@ -36,7 +56,12 @@ class WovenMonopoly
 
     def take_turn(player)
         roll = @dice_rolls[@turn_num % @dice_rolls.length]
+        puts "#{player.name}'s rolls #{roll}"
+
+        prev_pos = @curr_player.position
         @curr_player.move(roll, @board.size)
+
+        @board.pass_go(player) if @curr_player.position < prev_pos
         @board.land_on(player)
     end
 

@@ -1,5 +1,3 @@
-require_relative 'bankrupt_error'
-
 class Player
     attr_accessor :name, :money
     attr_reader :properties_num_by_color, :position
@@ -42,6 +40,6 @@ class Player
     end
 
     def to_s
-        "    Player: #{@name}\n    Money: #{@money}\n    Properties: #{@properties}\n    Position: #{@position}"
+        "    Player: #{@name}\n    Money: #{@money}\n    Position: #{@position}"
     end
 end

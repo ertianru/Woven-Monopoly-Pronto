@@ -1,22 +1,21 @@
 require 'json'
-require_relative 'go'
-require_relative 'property'
+require_relative 'dice'
 require_relative 'board'
 require_relative 'player'
 
 class WovenMonopoly
-    attr_reader :board, :turn_num, :curr_player, :dice_rolls, :players
+    attr_reader :board, :turn_num, :curr_player, :dice, :players
 
     def initialize(spaces_file_path, player_names, dice_rolls_file_path)
-        @board = Board.new(load_spaces(spaces_file_path))
-        @players = load_player(player_names)
-        @dice_rolls = JSON.parse(File.read(dice_rolls_file_path))
+        @board = Board.new(spaces_file_path)
+        @players = load_players(player_names)
+        @dice = Dice.new(dice_rolls_file_path)
         @turn_num = 0
         @curr_player = get_current_player
     end
 
     def start_game
-        until @curr_player.bankrupt? || turn_num > @dice_rolls.length
+        until @curr_player.bankrupt? || dice.end?(@turn_num)
             @curr_player = get_current_player
             take_turn(@curr_player)
 
@@ -25,15 +24,22 @@ class WovenMonopoly
 
         puts "#{@curr_player.name} is bankrupt"
         puts @curr_player
+        puts '=================================================================='
         puts 'Game Over'
 
         winner = determine_winner
+        puts '=================================================================='
         puts "Winner is\n#{winner}"
         puts '=================================================================='
+        puts 'Standings'
         @players.each do |player|
+            space = @board.get_space(player.position)
             puts player
+            puts "    Space: #{space.name}"
             puts "\n"
         end
+
+        { winner: winner, standings: @players }
     end
 
     private
@@ -55,7 +61,7 @@ class WovenMonopoly
     end
 
     def take_turn(player)
-        roll = @dice_rolls[@turn_num % @dice_rolls.length]
+        roll = @dice.roll(@turn_num)
         puts "#{player.name}'s rolls #{roll}"
 
         prev_pos = @curr_player.position
@@ -65,29 +71,7 @@ class WovenMonopoly
         @board.land_on(player)
     end
 
-    def load_spaces(spaces_file_path)
-        spaces_json = JSON.parse(File.read(spaces_file_path))
-
-        spaces = []
-        properties = {}
-        spaces_json.each do |s|
-            case s['type']
-            when 'go'
-                spaces << Go.new(s['name'])
-            when 'property'
-                # TODO: ask how much rent cost
-                spaces << Property.new(s['name'], s['price'], s['colour'], s['price'])
-                properties[s['colour']] ||= 0
-                properties[s['colour']] += 1
-            end
-        end
-
-        Property.properties_num_by_color(properties)
-
-        spaces
-    end
-
-    def load_player(player_names)
+    def load_players(player_names)
         players = []
         player_names.each do |player_name|
             players << Player.new(player_name)
@@ -98,12 +82,13 @@ class WovenMonopoly
 end
 
 if __FILE__ == $0
-    spaces_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\board.json'
-    rolls_1_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\rolls_1.json'
-    # rolls_2_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\board.json'
+    # spaces_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\board.json'
+    # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\rolls_1.json'
+    # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\rolls_2.json'
     players = %w[Peter Billy Charlotte Sweedal]
-    # Property.new(spaces_data[0])
+    spaces_fp = ARGV[0]
+    rolls_fp = ARGV[1]
 
-    wm_game = WovenMonopoly.new(spaces_fp, players, rolls_1_fp)
+    wm_game = WovenMonopoly.new(spaces_fp, players, rolls_fp)
     wm_game.start_game
 end

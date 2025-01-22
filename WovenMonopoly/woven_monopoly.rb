@@ -38,14 +38,29 @@ class WovenMonopoly
             @turn_num += 1
         end
 
+        winner = determine_winner
+        puts_game_over_msg(winner)
+
+        { winner: winner, standings: @players }
+    end
+
+    private
+
+    # Outputs the game over message, including the winner and the standings of all players.
+    #
+    # @param winner [Player] the player who has won the game
+    #
+    # @return [void]
+    def puts_game_over_msg(winner)
         puts "#{@curr_player.name} is bankrupt"
         puts @curr_player
         puts '=================================================================='
         puts 'Game Over'
 
-        winner = determine_winner
+        space = @board.get_space(winner.position)
         puts '=================================================================='
         puts "Winner is\n#{winner}"
+        puts "    Space: #{space.name}"
         puts '=================================================================='
         puts 'Standings'
         @players.each do |player|
@@ -54,11 +69,7 @@ class WovenMonopoly
             puts "    Space: #{space.name}"
             puts "\n"
         end
-
-        { winner: winner, standings: @players }
     end
-
-    private
 
     # Determines the winner of the game based on the player with the most money.
     #

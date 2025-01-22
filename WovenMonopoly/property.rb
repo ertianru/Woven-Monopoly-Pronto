@@ -48,12 +48,9 @@ class Property < Space
             puts self
         else
             puts "#{@name} is owned by #{@owner.name}"
-            puts "#{player.name} ($#{player.money}) pays rent to #{@owner.name} ($#{@owner.money})"
 
             handle_rent(player)
 
-            puts "    #{player.name} ($#{player.money})"
-            puts "    #{@owner.name} ($#{@owner.money})"
         end
     end
 
@@ -79,6 +76,9 @@ class Property < Space
     # @param player [Player] the player who pays the rent
     def handle_rent(player)
         validate_properties_num_by_color
+        return if player == @owner
+
+        puts "#{player.name} ($#{player.money}) pays rent to #{@owner.name} ($#{@owner.money})"
 
         rent = @rent
         if @owner.get_num_owned_properties_color(@color) == @@properties_num_by_color[@color]
@@ -87,6 +87,9 @@ class Property < Space
 
         player.deduct_money(rent)
         @owner.receive_money(rent)
+
+        puts "    #{player.name} ($#{player.money})"
+        puts "    #{@owner.name} ($#{@owner.money})"
     end
 
     # Validates that the properties_num_by_color class variable has been initialized

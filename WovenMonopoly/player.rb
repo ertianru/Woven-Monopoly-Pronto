@@ -1,32 +1,36 @@
 require_relative 'bankrupt_error'
 
 class Player
-    attr_accessor :name, :money, :position
-    attr_reader :properties
+    attr_accessor :name, :money
+    attr_reader :properties_num_by_color, :position
 
     def initialize(name, money = 16, position = 0)
         @name = name
         @money = money
-        @properties = []
+        @properties_num_by_color = {}
         @position = position
     end
 
-    def buy_property(property)
-        # raise BankruptError if @money < property.price
-
-        @money -= property.price
-        @properties << property
-        puts "#{@name} bought #{property.name}"
+    def buy_property(price, color)
+        @money -= price
+        @properties_num_by_color[color] ||= 0
+        @properties_num_by_color[color] += 1
     end
 
-    def pay_rent(property)
-        # raise BankruptError if @money < property.rent
+    def pay_rent(rent)
+        @money -= rent
+    end
 
-        @money -= property.rent
-        property.owner.money += property.rent
-        puts "#{@name} paid rent to #{property.owner.name}"
-        puts "#{@name}"
-        puts "#{property.owner}"
+    def receive_rent(rent)
+        @money += rent
+    end
+
+    def get_num_owned_properties_color(color)
+        if @properties_num_by_color[color].nil?
+            raise Error, "Player does not own any properties of color #{color}"
+        end
+
+        @properties_num_by_color[color]
     end
 
     def move(roll, board_size)

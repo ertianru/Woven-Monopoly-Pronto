@@ -5,8 +5,7 @@ require_relative 'board'
 require_relative 'player'
 
 class WovenMonopoly
-    attr_accessor :players, :dice_rolls
-    attr_reader :board, :turn_num, :properties, :curr_player
+    attr_reader :board, :turn_num, :curr_player, :dice_rolls, :players
 
     def initialize(spaces_file_path, player_names, dice_rolls_file_path)
         @board = Board.new(load_spaces(spaces_file_path))
@@ -23,6 +22,7 @@ class WovenMonopoly
 
             @turn_num += 1
         end
+
         puts "#{@curr_player.name} is bankrupt"
         puts @curr_player
         puts 'Game Over'
@@ -37,21 +37,27 @@ class WovenMonopoly
     def take_turn(player)
         roll = @dice_rolls[@turn_num % @dice_rolls.length]
         @curr_player.move(roll, @board.size)
-        @board.get_space(player.position).land_on(player)
+        @board.land_on(player)
     end
 
     def load_spaces(spaces_file_path)
         spaces_json = JSON.parse(File.read(spaces_file_path))
 
         spaces = []
+        properties = {}
         spaces_json.each do |s|
             case s['type']
             when 'go'
                 spaces << Go.new(s['name'])
             when 'property'
-                spaces << Property.new(s['name'], s['price'], s['color'], 2)
+                # TODO: ask how much rent cost
+                spaces << Property.new(s['name'], s['price'], s['colour'], s['price'])
+                properties[s['colour']] ||= 0
+                properties[s['colour']] += 1
             end
         end
+
+        Property.properties_num_by_color(properties)
 
         spaces
     end

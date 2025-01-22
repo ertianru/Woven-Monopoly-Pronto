@@ -2,6 +2,7 @@ require 'json'
 require_relative 'dice'
 require_relative 'board'
 require_relative 'player'
+require 'logger'
 
 # WovenMonopoly class represents the main game logic.
 # It manages the game board, players, dice rolls, and the game flow.

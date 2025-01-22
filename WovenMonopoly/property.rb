@@ -48,7 +48,7 @@ class Property < Space
             puts self
         else
             puts "#{@name} is owned by #{@owner.name}"
-            puts "#{player.name} ($#{player.money}) pays rent to #{@owner.name} (#{@owner.money})"
+            puts "#{player.name} ($#{player.money}) pays rent to #{@owner.name} ($#{@owner.money})"
 
             handle_rent(player)
 
@@ -61,7 +61,7 @@ class Property < Space
     #
     # @return [String] a string representation of the property
     def to_s
-        "    Property: #{@name}\n    Price: #{@price}\n    Color: #{@color}\n    Owner: \n#{@owner}\n    Rent: #{@rent}"
+        "    Property: #{@name}\n    Price: #{@price}\n    Color: #{@color}\n    Owner: #{@owner.name} ($#{@owner.money})\n    Rent: #{@rent}"
     end
 
     private

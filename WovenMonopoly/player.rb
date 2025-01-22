@@ -80,6 +80,6 @@ class Player
     #
     # @return [String] a string containing the player's name, money, and position
     def to_s
-        "    Player: #{@name}\n    Money: #{@money}\n    Position: #{@position}"
+        "    Player: #{@name}\n    Money: $#{@money}\n    Position: #{@position}"
     end
 end

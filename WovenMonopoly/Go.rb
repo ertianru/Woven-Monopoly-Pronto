@@ -19,7 +19,7 @@ class Go < Space
     # @param [Player] player The player who lands on or passes this space.
     # @return [void]
     def land_on(player)
-        puts "#{player.name} passed by #{@name} (#{player.money})"
+        puts "#{player.name} passed by #{@name} ($#{player.money})"
         player.receive_money(@go_money)
         puts player
     end

@@ -1,10 +1,24 @@
 require_relative 'space'
 
+# The Property class represents a property space on the Monopoly board.
+# It inherits from the Space class.
 class Property < Space
+    # Class variable to store the number of properties by color
+    # Used to determine if a player owns all properties of a color group
     @@properties_num_by_color = {}
 
+    # @return [Integer] the price of the property
+    # @return [String] the color group of the property
+    # @return [Player, nil] the owner of the property, or nil if unowned
+    # @return [Integer] the base rent of the property
     attr_reader :price, :color, :owner, :rent
 
+    # Initializes a new Property object
+    #
+    # @param name [String] the name of the property
+    # @param price [Integer] the price of the property
+    # @param color [String] the color group of the property
+    # @param rent [Integer] the base rent of the property
     def initialize(name, price, color, rent)
         super(name)
         @price = price
@@ -12,11 +26,16 @@ class Property < Space
         @rent = rent
     end
 
-    # setter
+    # Sets the number of properties by color
+    #
+    # @param properties_num_by_color [Hash] a hash mapping color groups to the number of properties in that group
     def self.properties_num_by_color(properties_num_by_color)
         @@properties_num_by_color = properties_num_by_color
     end
 
+    # Handles the event of a player landing on the property
+    #
+    # @param player [Player] the player who lands on the property
     def land_on(player)
         puts "#{player.name} lands on #{@name}"
 
@@ -38,17 +57,26 @@ class Property < Space
         end
     end
 
+    # Returns a string representation of the property
+    #
+    # @return [String] a string representation of the property
     def to_s
         "    Property: #{@name}\n    Price: #{@price}\n    Color: #{@color}\n    Owner: \n#{@owner}\n    Rent: #{@rent}"
     end
 
     private
 
+    # Handles the purchase of the property by a player
+    #
+    # @param player [Player] the player who buys the property
     def handle_purchase(player)
         player.buy_property(@price, @color)
         @owner = player
     end
 
+    # Handles the payment of rent by a player to the owner of the property
+    #
+    # @param player [Player] the player who pays the rent
     def handle_rent(player)
         validate_properties_num_by_color
 
@@ -61,6 +89,9 @@ class Property < Space
         @owner.receive_money(rent)
     end
 
+    # Validates that the properties_num_by_color class variable has been initialized
+    #
+    # @raise [RuntimeError] if properties_num_by_color is not initialized
     def validate_properties_num_by_color
         return unless @@properties_num_by_color.nil?
 

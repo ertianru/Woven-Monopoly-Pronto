@@ -3,9 +3,21 @@ require_relative 'dice'
 require_relative 'board'
 require_relative 'player'
 
+# WovenMonopoly class represents the main game logic.
+# It manages the game board, players, dice rolls, and the game flow.
 class WovenMonopoly
+    # @return [Board] the game board
+    # @return [Integer] the current turn number
+    # @return [Player] the current player
+    # @return [Dice] the dice used for rolling
+    # @return [Array<Player>] the list of players
     attr_reader :board, :turn_num, :curr_player, :dice, :players
 
+    # Initializes a new game of WovenMonopoly.
+    #
+    # @param spaces_file_path [String] the file path to the JSON file containing the board spaces
+    # @param player_names [Array<String>] the names of the players
+    # @param dice_rolls_file_path [String] the file path to the JSON file containing the dice rolls
     def initialize(spaces_file_path, player_names, dice_rolls_file_path)
         @board = Board.new(spaces_file_path)
         @players = load_players(player_names)
@@ -14,6 +26,9 @@ class WovenMonopoly
         @curr_player = get_current_player
     end
 
+    # Starts the game and manages the game loop until a player goes bankrupt or the dice rolls end.
+    #
+    # @return [Hash] a hash containing the winner and the final standings of the players
     def start_game
         until @curr_player.bankrupt? || dice.end?(@turn_num)
             @curr_player = get_current_player
@@ -44,6 +59,9 @@ class WovenMonopoly
 
     private
 
+    # Determines the winner of the game based on the player with the most money.
+    #
+    # @return [Player] the player with the most money
     def determine_winner
         winner = nil
         money = 0
@@ -56,10 +74,17 @@ class WovenMonopoly
         winner
     end
 
+    # Gets the current player based on the turn number.
+    #
+    # @param turn_num [Integer] the current turn number (default: @turn_num)
+    # @return [Player] the current player
     def get_current_player(turn_num = @turn_num)
         @players[turn_num % @players.length]
     end
 
+    # Manages the actions taken during a player's turn, including rolling the dice and moving the player.
+    #
+    # @param player [Player] the player taking the turn
     def take_turn(player)
         roll = @dice.roll(@turn_num)
         puts "#{player.name}'s rolls #{roll}"
@@ -71,6 +96,10 @@ class WovenMonopoly
         @board.land_on(player)
     end
 
+    # Loads the players based on the provided player names.
+    #
+    # @param player_names [Array<String>] the names of the players
+    # @return [Array<Player>] the list of players
     def load_players(player_names)
         players = []
         player_names.each do |player_name|
@@ -81,6 +110,7 @@ class WovenMonopoly
     end
 end
 
+# Main entry point for the game. Initializes and starts the game with the provided file paths and player names.
 if __FILE__ == $0
     # spaces_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\board.json'
     # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\rolls_1.json'

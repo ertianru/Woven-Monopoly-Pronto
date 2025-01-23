@@ -10,6 +10,7 @@ The Woven Monopoly game simulates a deterministic version of Monopoly with prede
 - Properties can be purchased if unowned, and rent is paid to the owner if owned.
 - Rent doubles if a player owns all properties of the same color.
 - The game uses a JSON file to define the board and another JSON file for dice rolls.
+- Bankruptcy occurs when the money a player owns falls below 0, not at 0.
 
 ## Requirements
 - Ruby 3.0 or higher

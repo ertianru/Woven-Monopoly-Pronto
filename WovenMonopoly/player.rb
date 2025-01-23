@@ -36,7 +36,7 @@ class Player
     # @param money [Integer] the amount of money to deduct
     # @return [void]
     def deduct_money(money)
-        @money -= money
+        @money = (@money - money).round(2)
     end
 
     # Adds money to the player's total.
@@ -44,7 +44,7 @@ class Player
     # @param money [Integer] the amount of money to add
     # @return [void]
     def receive_money(money)
-        @money += money
+        @money = (@money + money).round(2)
     end
 
     # Gets the number of properties owned by the player of a specific color.

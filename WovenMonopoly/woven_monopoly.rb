@@ -124,9 +124,9 @@ end
 
 # Main entry point for the game. Initializes and starts the game with the provided file paths and player names.
 if __FILE__ == $0
-    # spaces_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\board.json'
-    # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\rolls_1.json'
-    # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\WovenMonopoly\data\rolls_2.json'
+    # spaces_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\data\board.json'
+    # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\data\rolls_1.json'
+    # rolls_fp = 'C:\Users\oohpi\OneDrive\Documents\GitHub\Woven-Monopoly-Pronto\data\rolls_2.json'
     players = %w[Peter Billy Charlotte Sweedal]
     spaces_fp = ARGV[0]
     rolls_fp = ARGV[1]

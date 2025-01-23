@@ -6,7 +6,7 @@ The Woven Monopoly game simulates a deterministic version of Monopoly with prede
 ## Assumptions
 - Four players take turns in order: Peter, Billy, Charlotte, and Sweedal.
 - Players start with $16 each and gain $1 upon passing GO.
-- Rent for each property is the same as it's price.
+- Rent is assumed to be 10% of the property price
 - Properties can be purchased if unowned, and rent is paid to the owner if owned.
 - Rent doubles if a player owns all properties of the same color.
 - The game uses a JSON file to define the board and another JSON file for dice rolls.

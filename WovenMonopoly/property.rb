@@ -78,12 +78,13 @@ class Property < Space
         validate_properties_num_by_color
         return if player == @owner
 
-        puts "#{player.name} ($#{player.money}) pays rent to #{@owner.name} ($#{@owner.money})"
-
         rent = @rent
         if @owner.get_num_owned_properties_color(@color) == @@properties_num_by_color[@color]
             rent *= 2
+            puts "    #{@owner} owns all properties of color #{@color}, rent is doubled to $#{rent}"
         end
+
+        puts "#{player.name} ($#{player.money}) pays rent ($#{@rent}) to #{@owner.name} ($#{@owner.money})"
 
         player.deduct_money(rent)
         @owner.receive_money(rent)

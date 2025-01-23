@@ -59,8 +59,9 @@ class Board
             when 'go'
                 spaces << Go.new(s['name'])
             when 'property'
-                # TODO: ask how much rent cost
-                spaces << Property.new(s['name'], s['price'], s['colour'], s['price'])
+                # Rent is assumed to be 10% of the property price
+                spaces << Property.new(s['name'], s['price'], s['colour'],
+                                       (s['price'] * 0.1).round(2))
                 properties[s['colour']] ||= 0
                 properties[s['colour']] += 1
             end
